@@ -1,0 +1,57 @@
+startDelaySeconds: 0
+hostPort: 127.0.0.1:9999
+username:
+password:
+ssl: false
+lowercaseOutputName: true
+lowercaseOutputLabelNames: true
+
+# Cluster is not excluded
+#    "Coherence:type=Cluster,*", 
+
+# Use the below to exclude MBeans 
+blacklistObjectNames: [
+    "java.lang:*", 
+    "Coherence:type=Reporter,*", 
+    "Coherence:type=Platform,*", 
+    "Coherence:type=PointToPoint,*",
+    "Coherence:type=Service,name=invocation-service,*",
+    "Coherence:type=Service,*", 
+    "Coherence:type=Node,*", 
+    "Coherence:type=Management,*",
+    "Coherence:type=DiagnosticCommand,*",
+    "Coherence:type=PartitionAssignment,*",
+    "Coherence:type=StorageManager,*",
+    "Coherence:type=ConnectionManager,*",
+    "Coherence:type=Cache,*",
+    "Coherence:type=Persistence,*",
+    "JMImplementation:type=*",
+    "java.nio:type=BufferPool,*",
+    "java.nio:type=BufferPool,*",
+    "EMDomain:name=oracle.sysman.emas.CoherenceDiscovery,type=*",
+    "com.sun.management:type=*",
+    "java.util.logging:type=*",
+    "java.lang:type=Threading,*",
+    "java.lang:type=MemoryPool,*",
+    "java.lang:type=MemoryManager,*",
+    "java.lang:type=ClassLoading,*",
+    "java.lang:type=GarbageCollector,*",
+    "java.lang:type=OperatingSystem,*",
+    "java.lang:type=Compilation,*",
+    "java.lang:type=Memory,*"
+    ]
+rules:
+    - pattern: "Coherence<type=Cluster><>ClusterName: (.*)"
+      name: coherence_cluster_cluster_name
+      value: 1
+      labels:
+        runtime: "$1"
+
+    - pattern: "Coherence<type=Cluster><>Version: (.*)"
+      name: coherence_cluster_version
+      value: 1
+      labels:
+        runtime: "$1"
+
+    - pattern: "Coherence<type=Cluster,*>"
+      attrNameSnakeCase: true
